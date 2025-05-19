@@ -1,0 +1,57 @@
+import unittest
+from matrix_divided import matrix_divided
+
+class TestMatrixDivided(unittest.TestCase):
+    def test_valid_matrix(self):
+        matrix = [[2, 4], [6, 8]]
+        expected = [[1.0, 2.0], [3.0, 4.0]]
+        self.assertEqual(matrix_divided(matrix, 2), expected)
+
+    def test_floats_and_ints(self):
+        matrix = [[1.5, 3], [6.6, 9]]
+        expected = [[0.75, 1.5], [3.3, 4.5]]
+        self.assertEqual(matrix_divided(matrix, 2), expected)
+
+    def test_rounding(self):
+        matrix = [[1, 2], [3, 4]]
+        expected = [[0.33, 0.67], [1.0, 1.33]]
+        result = matrix_divided(matrix, 3)
+        for row_res, row_exp in zip(result, expected):
+            for r, e in zip(row_res, row_exp):
+                self.assertAlmostEqual(r, e, places=2)
+
+    def test_invalid_matrix_not_list(self):
+        with self.assertRaises(TypeError):
+            matrix_divided("not a matrix", 2)
+
+    def test_invalid_matrix_elements_not_lists(self):
+        with self.assertRaises(TypeError):
+            matrix_divided([1, 2, 3], 2)
+
+    def test_invalid_element_not_number(self):
+        with self.assertRaises(TypeError):
+            matrix_divided([[1, 'a'], [2, 3]], 2)
+
+    def test_unequal_row_sizes(self):
+        with self.assertRaises(TypeError):
+            matrix_divided([[1, 2], [3, 4, 5]], 2)
+
+    def test_div_not_number(self):
+        with self.assertRaises(TypeError):
+            matrix_divided([[1, 2], [3, 4]], "a")
+
+    def test_div_is_zero(self):
+        with self.assertRaises(ZeroDivisionError):
+            matrix_divided([[1, 2], [3, 4]], 0)
+
+    def test_empty_matrix(self):
+        with self.assertRaises(TypeError):
+            matrix_divided([], 1)
+
+    def test_matrix_with_empty_row(self):
+        with self.assertRaises(TypeError):
+            matrix_divided([[1, 2], []], 1)
+
+
+if __name__ == "__main__":
+    unittest.main()
