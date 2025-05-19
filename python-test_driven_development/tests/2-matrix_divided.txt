@@ -1,57 +1,50 @@
-import unittest
-from matrix_divided import matrix_divided
+The "matrix_divided" doctest
+============================
 
-class TestMatrixDivided(unittest.TestCase):
-    def test_valid_matrix(self):
-        matrix = [[2, 4], [6, 8]]
-        expected = [[1.0, 2.0], [3.0, 4.0]]
-        self.assertEqual(matrix_divided(matrix, 2), expected)
+Tests the matrix_divided function from 2-matrix_divided
+for any edge cases that may break the functionality
+of the imported function.
 
-    def test_floats_and_ints(self):
-        matrix = [[1.5, 3], [6.6, 9]]
-        expected = [[0.75, 1.5], [3.3, 4.5]]
-        self.assertEqual(matrix_divided(matrix, 2), expected)
+>>> matrix_divided = __import__('2-matrix_divided').matrix_divided
 
-    def test_rounding(self):
-        matrix = [[1, 2], [3, 4]]
-        expected = [[0.33, 0.67], [1.0, 1.33]]
-        result = matrix_divided(matrix, 3)
-        for row_res, row_exp in zip(result, expected):
-            for r, e in zip(row_res, row_exp):
-                self.assertAlmostEqual(r, e, places=2)
+>>> matrix = [[1, 2, 3], [4, 5, 6]]
+>>> print(matrix_divided(matrix, 3))
+[[0.33, 0.67, 1.0], [1.33, 1.67, 2.0]]
 
-    def test_invalid_matrix_not_list(self):
-        with self.assertRaises(TypeError):
-            matrix_divided("not a matrix", 2)
+>>> try:
+...     matrix_divided([["A", "d" ,"i"], ["i", "o", "s"]], 3)
+... except TypeError as e:
+...     print(e)
+matrix must be a matrix (list of lists) of integers/floats
 
-    def test_invalid_matrix_elements_not_lists(self):
-        with self.assertRaises(TypeError):
-            matrix_divided([1, 2, 3], 2)
+>>> try:
+...     matrix_divided([[1, 2, 3], [4, 5, 6]], 0)
+... except ZeroDivisionError as e:
+...     print(e)
+division by zero
 
-    def test_invalid_element_not_number(self):
-        with self.assertRaises(TypeError):
-            matrix_divided([[1, 'a'], [2, 3]], 2)
+>>> matrix = [[1, 2, 3], [4, 5, 6]]
+>>> print(matrix_divided(matrix, -3))
+[[-0.33, -0.67, -1.0], [-1.33, -1.67, -2.0]]
 
-    def test_unequal_row_sizes(self):
-        with self.assertRaises(TypeError):
-            matrix_divided([[1, 2], [3, 4, 5]], 2)
+>>> matrix = [[]]
+>>> print(matrix_divided(matrix, 2))
+[[]]
 
-    def test_div_not_number(self):
-        with self.assertRaises(TypeError):
-            matrix_divided([[1, 2], [3, 4]], "a")
+>>> try:
+...     matrix_divided([[1, 2 ,3], [4, 5]], 3)
+... except TypeError as e:
+...     print(e)
+Each row of the matrix must have the same size
 
-    def test_div_is_zero(self):
-        with self.assertRaises(ZeroDivisionError):
-            matrix_divided([[1, 2], [3, 4]], 0)
+>>> try:
+...     matrix_divided([[1, 2, 3], [4, 5, 6]], "hello")
+... except TypeError as e:
+...     print(e)
+div must be a number
 
-    def test_empty_matrix(self):
-        with self.assertRaises(TypeError):
-            matrix_divided([], 1)
-
-    def test_matrix_with_empty_row(self):
-        with self.assertRaises(TypeError):
-            matrix_divided([[1, 2], []], 1)
-
-
-if __name__ == "__main__":
-    unittest.main()
+>>> try:
+...     matrix_divided()
+... except TypeError as e:
+...     print(e)
+matrix_divided() missing 2 required positional arguments: 'matrix' and 'div'
