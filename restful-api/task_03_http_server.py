@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
-class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
+class SimpleAPIHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path == '/':
@@ -11,15 +11,13 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(b"Hello, this is a simple API!")
 
         elif self.path == '/data':
+            data = {"name": "John", "age": 30, "city": "New York"}
+            json_data = json.dumps(data)
+
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
-            response = {
-                "name": "John",
-                "age": 30,
-                "city": "New York"
-            }
-            self.wfile.write(json.dumps(response).encode())
+            self.wfile.write(json_data.encode('utf-8'))
 
         elif self.path == '/status':
             self.send_response(200)
@@ -27,19 +25,27 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b"OK")
 
+        elif self.path == '/info':
+            info = {"version": "1.0", "description": "A simple API built with http.server"}
+            json_info = json.dumps(info)
+
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json_info.encode('utf-8'))
+
         else:
             self.send_response(404)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
-            error = {"error": "Endpoint not found"}
-            self.wfile.write(json.dumps(error).encode())
+            error_msg = {"error": "Endpoint not found"}
+            self.wfile.write(json.dumps(error_msg).encode('utf-8'))
 
-def run(server_class=HTTPServer, handler_class=SimpleHTTPRequestHandler, port=8000):
+def run(server_class=HTTPServer, handler_class=SimpleAPIHandler, port=8000):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
-    print(f"Server running on http://localhost:{port}")
+    print(f"Starting server on http://localhost:{port}")
     httpd.serve_forever()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run()
-
