@@ -1,5 +1,3 @@
-#!usr/bin/pyhton3
-
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
