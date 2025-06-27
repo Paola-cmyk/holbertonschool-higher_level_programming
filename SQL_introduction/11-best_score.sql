@@ -1,4 +1,4 @@
---lists all records with a score from hbtn_0c_0 in MySQL server
+-- lists all records with a score from hbtn_0c_0 in MySQL server
 SELECT score, name
 FROM second_table
 WHERE
