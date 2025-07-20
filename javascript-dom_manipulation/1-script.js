@@ -1,5 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelector("#red_header").addEventListener("click", function () {
-      document.querySelector("header").style.color = "#FF0000";
-    });
-  });  
+const header = document.querySelector('header');
+const changeColor = document.body.querySelector('#red_header');
+
+changeColor.addEventListener('click', () => {
+  header.style.color = '#FF0000';
+});
